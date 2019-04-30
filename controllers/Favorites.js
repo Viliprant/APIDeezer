@@ -2,37 +2,36 @@ import {
     isNull
 } from "util";
 
-export default class Search {
+export default class Favorite {
 
     constructor() {
-        this.view = 'search.html';
+        this.view = 'favorites.html';
     }
 
     init() {
         /* DIV DEDIER A DEEZER */
         let deezerAPI = document.getElementById('api-deezer');
-
-        /* Formulaire pour la recherche de la musique */
-        let searchMusicForm = document.getElementById('searchMusicForm'),
-            /* Le champ texte pour la recherche */
-            maRecherche = document.getElementById('maRecherche'),
-            /* Pour le tri */
-            monTri = document.getElementById('tri');
         /* LOCALSTORAGE */
         let dataFavorites = [];
         if (!isNull(localStorage.getItem('myMusicsAPIDeezer'))) {
             dataFavorites = localStorage.getItem('myMusicsAPIDeezer').split(",").map(Number);
         }
 
-        searchMusicForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-            $('.container-music').remove();
-            /*RECUPERER VIA API*/
-            $.ajax({
-                url: 'https://api.deezer.com/search?strict=on&q=' + maRecherche.value + '&order=' + monTri.value + '&output=jsonp',
-                dataType: 'jsonp'
-            }).done(function (musics) {
-                for (const musicKey in musics.data) {
+        $('.container-music').remove();
+        console.log(dataFavorites.length == 0);
+        if (dataFavorites.length == 0) {
+            let noFavoritesMusics = document.createElement('div');
+            noFavoritesMusics.className = 'noFavoritesMusics';
+            noFavoritesMusics.innerHTML = '<p>Vous n\'avez pas encore ajouté de favoris.</p>';
+            deezerAPI.appendChild(noFavoritesMusics);
+
+        } else {
+            for (const dataFavoriteKey in dataFavorites) {
+                /*RECUPERER VIA API*/
+                $.ajax({
+                    url: 'http://api.deezer.com/track/' + dataFavorites[dataFavoriteKey] + '&output=jsonp',
+                    dataType: 'jsonp'
+                }).done(function (musics) {
                     /* Container Musique */
                     let musicContainer = document.createElement('div');
                     musicContainer.className = 'container-music';
@@ -42,27 +41,27 @@ export default class Search {
                     let musicInfos = [];
 
                     let musicImage = document.createElement('img');
-                    musicImage.src = musics.data[musicKey].album.cover_small;
+                    musicImage.src = musics.album.cover_small;
                     musicImage.className = 'right-img';
                     musicInfos.push(musicImage);
 
                     let musicTitle = document.createElement('div');
-                    musicTitle.innerHTML = musics.data[musicKey].title;
+                    musicTitle.innerHTML = musics.title_short;
                     musicTitle.className = 'title';
                     musicInfos.push(musicTitle);
 
                     let musicAuthor = document.createElement('div');
-                    musicAuthor.innerHTML = musics.data[musicKey].artist.name;
+                    musicAuthor.innerHTML = musics.artist.name;
                     musicInfos.push(musicAuthor);
 
                     let musicAlbum = document.createElement('div');
-                    musicAlbum.innerHTML = musics.data[musicKey].album.title;
+                    musicAlbum.innerHTML = musics.album.title;
                     musicAlbum.className = 'album';
                     musicInfos.push(musicAlbum);
 
                     let musicPlayer = document.createElement('div');
                     musicPlayer.innerHTML = "   <audio controls='controls'>" +
-                        "<source src='" + musics.data[musicKey].preview + "' type='audio/mp3' />" +
+                        "<source src='" + musics.preview + "' type='audio/mp3' />" +
                         "Votre navigateur n'est pas compatible" +
                         "</audio>";
                     musicInfos.push(musicPlayer);
@@ -73,11 +72,11 @@ export default class Search {
                     /* AJOUTER AUX FAVORIS DANS LOCALSTORAGE */
                     musicfavoriteButton.addEventListener('click', function () {
                         if (this.value == "Ajouter aux favoris") {
-                            dataFavorites.push(musics.data[musicKey].id);
+                            dataFavorites.push(musics.id);
                             localStorage.setItem('myMusicsAPIDeezer', dataFavorites);
                             this.value = 'Retirer des favoris';
                         } else {
-                            dataFavorites.splice(dataFavorites.indexOf(musics.data[musicKey].id), 1);
+                            dataFavorites.splice(dataFavorites.indexOf(musics.id), 1);
                             this.value = 'Ajouter aux favoris';
                             if (dataFavorites.length == 0) {
                                 localStorage.removeItem('myMusicsAPIDeezer');
@@ -89,7 +88,7 @@ export default class Search {
                     })
 
                     /* -----------------------Condition (plus tard) --------------------- */
-                    if (dataFavorites.includes(musics.data[musicKey].id)) {
+                    if (dataFavorites.includes(musics.id)) {
                         musicfavoriteButton.value = 'Retirer des favoris';
                         musicfavoriteButton.className = 'favorite';
                     } else {
@@ -100,10 +99,9 @@ export default class Search {
                     for (const infoKey in musicInfos) {
                         musicContainer.appendChild(musicInfos[infoKey]);
                     }
+                })
+            }
+        }
 
-
-                }
-            })
-        })
     }
 }

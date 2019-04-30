@@ -1,6 +1,22 @@
+<header>
+    <h1>Recherche sur Deezer</h1>
+    <p> Vous utilisez l'API Deezer ! C'est génial ! </p>
+</header>
 <form id="searchMusicForm">
     
+    <div class="right-form">
+        <label for="tri">Trier par : </label>
+        <SELECT id='tri'>
+            <OPTION value="ARTIST_ASC">Artiste</OPTION>
+            <OPTION value="TRACK_ASC">Titre</OPTION>
+            <OPTION value="ALBUM_ASC">Album</OPTION>
+            <OPTION value="RATING_ASC">Popularité</OPTION>
+            <OPTION value="RANKING">Rang</OPTION>
+        </SELECT>
+    </div>
+    
     <input type="text" id="maRecherche">
+
     <input type="submit" value='Rechercher'>
 
 </form>
