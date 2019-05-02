@@ -12,15 +12,28 @@ export default class Accueil {
         if (localStorage.getItem('myMusicsAPIDeezer') !== null) {
             dataFavorites = localStorage.getItem('myMusicsAPIDeezer').split(",").map(Number);
         }
+        let actuelMusic;
 
         $('#randomButton').remove();
 
-        function SearchOnApiDeezer(dataFavorites) {
+        function SearchOnApiDeezer(dataFavorites, actuelMusic) {
             $('.container-music').remove();
             $('.div-error').remove();
 
+            /* Gestion de l'aléatoire */
             /* CHOISIR AU HASARD UNE MUSIQUE FAVORIS */
             let myRandomFavorite = Math.floor(Math.random() * Math.floor(dataFavorites.length));
+            console.log(actuelMusic);
+            if(actuelMusic !== undefined)
+            {
+                if(dataFavorites.length > 1)
+                {
+                    while(myRandomFavorite == actuelMusic)
+                    {
+                        myRandomFavorite = Math.floor(Math.random() * Math.floor(dataFavorites.length));
+                    }
+                }
+            }
 
             /*RECUPERER VIA API*/
             $.ajax({
@@ -104,7 +117,9 @@ export default class Accueil {
                     '<p> Une erreur est survenue lors de la requête, vérifier votre connexion internet. Si le problème persiste veuillez joindre le support.</p>'
                 deezerAPI.appendChild(divError);
             });
+            return myRandomFavorite;
         }
+
         if (dataFavorites.length == 0) {
             $('#randomButton').remove();
         } else {
@@ -120,7 +135,7 @@ export default class Accueil {
                     $('#randomButton').remove();
                     $('.container-music').remove();
                 } else {
-                    SearchOnApiDeezer(dataFavorites);
+                    actuelMusic = SearchOnApiDeezer(dataFavorites, actuelMusic);
                 }
             });
             deezerAPI.after(randomButton);
