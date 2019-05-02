@@ -49,16 +49,16 @@ export default class Search {
                     musicInfos.push(musicImage);
 
                     let musicTitle = document.createElement('div');
-                    musicTitle.innerHTML = musics.data[musicKey].title;
+                    musicTitle.innerHTML = musics.data[musicKey].title.substring(0, 21);
                     musicTitle.className = 'title';
                     musicInfos.push(musicTitle);
 
                     let musicAuthor = document.createElement('div');
-                    musicAuthor.innerHTML = musics.data[musicKey].artist.name;
+                    musicAuthor.innerHTML = musics.data[musicKey].artist.name.substring(0, 21);
                     musicInfos.push(musicAuthor);
 
                     let musicAlbum = document.createElement('div');
-                    musicAlbum.innerHTML = musics.data[musicKey].album.title;
+                    musicAlbum.innerHTML = musics.data[musicKey].album.title.substring(0, 21);
                     musicAlbum.className = 'album';
                     musicInfos.push(musicAlbum);
 
@@ -67,6 +67,16 @@ export default class Search {
                         "<source src='" + musics.data[musicKey].preview + "' type='audio/mp3' />" +
                         "Votre navigateur n'est pas compatible" +
                         "</audio>";
+                    musicPlayer.children[0].preload = 'none';
+                    musicPlayer.children[0].addEventListener('playing',function(){
+                        let currentAudio = this;
+                        $.each($('audio'),function(){
+                            if(currentAudio !== this){
+                                this.pause();
+                                this.currentTime = 0;
+                            }
+                        });
+                    });
                     musicInfos.push(musicPlayer);
 
                     let musicfavoriteButton = document.createElement('input');

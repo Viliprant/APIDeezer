@@ -41,16 +41,16 @@ export default class Accueil {
                 musicInfos.push(musicImage);
 
                 let musicTitle = document.createElement('div');
-                musicTitle.innerHTML = musics.title_short;
+                musicTitle.innerHTML = musics.title.substring(0, 21);
                 musicTitle.className = 'title';
                 musicInfos.push(musicTitle);
 
                 let musicAuthor = document.createElement('div');
-                musicAuthor.innerHTML = musics.artist.name;
+                musicAuthor.innerHTML = musics.artist.name.substring(0, 21);
                 musicInfos.push(musicAuthor);
 
                 let musicAlbum = document.createElement('div');
-                musicAlbum.innerHTML = musics.album.title;
+                musicAlbum.innerHTML = musics.album.title.substring(0, 21);
                 musicAlbum.className = 'album';
                 musicInfos.push(musicAlbum);
 
