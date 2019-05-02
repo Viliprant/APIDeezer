@@ -1,6 +1,7 @@
 import Router from 'vanilla-router';
 import Search from '../controllers/Search';
 import Favorite from '../controllers/Favorites';
+import Accueil from '../controllers/Accueil';
 
 let myRouter = new Router({
     mode: 'hash'
@@ -8,7 +9,7 @@ let myRouter = new Router({
 
 /* Accueil */
 myRouter.add('/', function (name) {
-    dispatchRoute('home.html');
+    dispatchRoute(new Accueil());
 });
 /* Search */
 myRouter.add('/Search', function () {

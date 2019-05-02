@@ -1,7 +1,3 @@
-import {
-    isNull
-} from "util";
-
 export default class Search {
 
     constructor() {
@@ -9,6 +5,7 @@ export default class Search {
     }
 
     init() {
+        $('.div-error').remove();
         /* DIV DEDIER A DEEZER */
         let deezerAPI = document.getElementById('api-deezer');
 
@@ -20,18 +17,23 @@ export default class Search {
             monTri = document.getElementById('tri');
         /* LOCALSTORAGE */
         let dataFavorites = [];
-        if (!isNull(localStorage.getItem('myMusicsAPIDeezer'))) {
+        if (localStorage.getItem('myMusicsAPIDeezer') !== null) {
             dataFavorites = localStorage.getItem('myMusicsAPIDeezer').split(",").map(Number);
         }
 
+        $('#randomButton').remove();
+
         searchMusicForm.addEventListener('submit', function (event) {
             event.preventDefault();
+
             $('.container-music').remove();
+
             /*RECUPERER VIA API*/
             $.ajax({
                 url: 'https://api.deezer.com/search?strict=on&q=' + maRecherche.value + '&order=' + monTri.value + '&output=jsonp',
                 dataType: 'jsonp'
             }).done(function (musics) {
+                $('.div-error').remove();
                 for (const musicKey in musics.data) {
                     /* Container Musique */
                     let musicContainer = document.createElement('div');
@@ -88,13 +90,14 @@ export default class Search {
                         this.classList.toggle('favorite');
                     })
 
-                    /* -----------------------Condition (plus tard) --------------------- */
+                    /* -----------------------Condition pour les favoris au chargement de la page --------------------- */
                     if (dataFavorites.includes(musics.data[musicKey].id)) {
                         musicfavoriteButton.value = 'Retirer des favoris';
                         musicfavoriteButton.className = 'favorite';
                     } else {
                         musicfavoriteButton.value = 'Ajouter aux favoris';
                     }
+
                     musicInfos.push(musicfavoriteButton);
 
                     for (const infoKey in musicInfos) {
@@ -103,7 +106,15 @@ export default class Search {
 
 
                 }
-            })
+            }).fail(function () {
+                /* Affichage d'une erreur quelconque lors de la recherche */
+                $('.div-error').remove();
+                let divError = document.createElement('div');
+                divError.className = 'div-error';
+                divError.innerHTML = '  <h1> Erreur </h1>' +
+                    '<p> Une erreur est survenue lors de la requête, vérifier votre connexion internet. Si le problème persiste veuillez joindre le support.</p>'
+                deezerAPI.appendChild(divError);
+            });
         })
     }
 }
