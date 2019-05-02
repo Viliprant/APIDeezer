@@ -24,7 +24,7 @@ nav a:hover{
     color: #c29067;
 }
 
-nav img {
+img{
     vertical-align: middle;
 }
 
@@ -65,6 +65,7 @@ input {
     font-size: 15px;
     background-color: white;
     outline: none;
+    cursor: pointer;
 }
 
 .center-block {
