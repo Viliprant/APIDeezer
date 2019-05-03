@@ -34,7 +34,7 @@ export default class Search {
             /*RECUPERER VIA API*/
             searchAPIQ(maRecherche.value, monTri.value,
                 function (musics) {
-                    $('#api-deezer div').remove();
+                    $('#api-deezer > div').remove();
                     /* Si la recherche ne retourne aucun résultat */
                     if(musics.data !== undefined && musics.data.length == 0)
                     {
@@ -49,7 +49,7 @@ export default class Search {
                 },
                 function () {
                     /* AFFICHAGE EN CAS D'ERREURS */
-                    $('#api-deezer div').remove();
+                    $('#api-deezer > div').remove();
                     deezerAPI.appendChild(alert('error','Erreur','Une erreur est survenue lors de la requête, vérifier votre connexion internet. Si le problème persiste veuillez joindre le support.</p>'));
                 });
         })
