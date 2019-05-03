@@ -26,7 +26,7 @@ myRouter.check();
 const $apiDeezer = document.getElementById('api-deezer');
 
 function dispatchRoute(controller) {
-    return fetch(`../views/${controller.view}`)
+    return fetch(`views/${controller.view}`)
         .then(res => res.text())
         .then(htmlContent => {
             $apiDeezer.innerHTML = htmlContent;
