@@ -3,6 +3,10 @@ body {
     padding: 0;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 17px;
+    background: url('../images/backgroundNoteMusique3.png'), center / cover no-repeat url('../images/mainWallpaper2.jpg');
+    background-position: bottom right; 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 nav {
@@ -40,6 +44,9 @@ img{
 
 header {
     width: 100%;
+    color: white;
+    text-shadow: 2px 8px 6px rgba(0,0,0,0.2),
+                 0px -5px 35px rgba(255,255,255,0.3);
 }
 
 #api-deezer .container-music {
@@ -48,6 +55,7 @@ header {
     width: 300px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.70);
 }
 
 audio {
@@ -105,6 +113,7 @@ form {
     font-size: 19px;
     padding: 5px 10px;
     box-sizing: border-box;
+    cursor: text;
 }
 
 #searchMusicForm input[type='submit'] {
