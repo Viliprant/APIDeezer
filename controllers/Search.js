@@ -1,6 +1,6 @@
 import {searchAPIQ} from '../fragments/APIfunction';
 import CreateTrackCard from '../fragments/CreateTrackCard';
-import showError from '../fragments/erreurs';
+import alert from '../fragments/alert';
 export default class Search {
 
     constructor() {
@@ -38,11 +38,7 @@ export default class Search {
                     /* Si la recherche ne retourne aucun résultat */
                     if(musics.data !== undefined && musics.data.length == 0)
                     {
-                        let divWarning = document.createElement('div');
-                        divWarning.className = 'div-notFound';
-                        divWarning.innerHTML =  '<h1> Introuvable </h1>' +
-                                                '<p> Veillez à ne pas mettre n\'importe quoi. 🤢</p>';
-                        deezerAPI.appendChild(divWarning);
+                        deezerAPI.appendChild(alert('warning','Introuvable','Veillez à ne pas mettre n\'importe quoi. 🤢'));
                     }
                     else{
                         for (const musicKey in musics.data) {
@@ -53,7 +49,8 @@ export default class Search {
                 },
                 function () {
                     /* AFFICHAGE EN CAS D'ERREURS */
-                    deezerAPI.appendChild(showError());
+                    $('#api-deezer div').remove();
+                    deezerAPI.appendChild(alert('error','Erreur','Une erreur est survenue lors de la requête, vérifier votre connexion internet. Si le problème persiste veuillez joindre le support.</p>'));
                 });
         })
     }

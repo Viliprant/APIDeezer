@@ -1,6 +1,6 @@
 import {searchAPITracks} from '../fragments/APIfunction';
 import CreateTrackCard from '../fragments/CreateTrackCard';
-import showError from '../fragments/erreurs';
+import alert from '../fragments/alert';
 export default class Accueil {
     constructor() {
         this.view = 'home.html';
@@ -42,7 +42,7 @@ export default class Accueil {
                 },
                 function () {
                     /* AFFICHAGE EN CAS D'ERREURS */
-                    deezerAPI.appendChild(showError());
+                    deezerAPI.appendChild(alert('error','Erreur','Une erreur est survenue lors de la requête, vérifier votre connexion internet. Si le problème persiste veuillez joindre le support.</p>'));
                 });
             return myRandomFavorite;
         }
