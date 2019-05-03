@@ -8,7 +8,7 @@ export function searchAPIQ(q, order, done, fail) {
 
 export function searchAPITracks(track, done, fail) {
     $.ajax({
-            url: 'http://api.deezer.com/track/' + track + '&output=jsonp',
+            url: 'https://api.deezer.com/track/' + track + '&output=jsonp',
             dataType: 'jsonp'
         }).done(done)
         .fail(fail);
