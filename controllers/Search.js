@@ -8,7 +8,6 @@ export default class Search {
     }
 
     init() {
-        $('.div-error').remove();
         /* DIV DEDIER A DEEZER */
         let deezerAPI = document.getElementById('api-deezer');
 
@@ -35,11 +34,22 @@ export default class Search {
             /*RECUPERER VIA API*/
             searchAPIQ(maRecherche.value, monTri.value,
                 function (musics) {
-                    $('.div-error').remove();
-                    for (const musicKey in musics.data) {
+                    $('#api-deezer div').remove();
+                    /* Si la recherche ne retourne aucun résultat */
+                    if(musics.data !== undefined && musics.data.length == 0)
+                    {
+                        let divWarning = document.createElement('div');
+                        divWarning.className = 'div-notFound';
+                        divWarning.innerHTML =  '<h1> Introuvable </h1>' +
+                                                '<p> Veillez à ne pas mettre n\'importe quoi. 🤢</p>';
+                        deezerAPI.appendChild(divWarning);
+                    }
+                    else{
+                        for (const musicKey in musics.data) {
                         /* AFFICHAGE DES MUSIQUES */
                         deezerAPI.appendChild(CreateTrackCard(musics.data[musicKey],dataFavorites));
-                    }
+                        }
+                    }                   
                 },
                 function () {
                     /* AFFICHAGE EN CAS D'ERREURS */

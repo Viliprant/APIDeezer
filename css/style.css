@@ -149,13 +149,16 @@ form {
     font-size: 16px;
 }
 
-.div-error {
+.div-error, .div-notFound {
     background-color: crimson;
     color: white;
     width: 60%;
     padding: 10px;
     margin: 20px auto;
     border-radius: 5px;
+}
+.div-notFound{
+    background-color: goldenrod
 }
 .div-error h1{
     text-align: center;
